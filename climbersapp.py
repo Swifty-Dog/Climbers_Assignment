@@ -58,7 +58,7 @@ def expedition_climbers():
             for climber in line["climbers"]:
                 climber_id = climber["id"]
                 ID = line["id"]
-                val = (ID, climber_id)
+                val = (climber_id, ID)
                 c.execute(query, val)
         conn.commit()
 
@@ -114,7 +114,10 @@ def show_table_mountain():
         print(x)
 
 def main():
-    show_table_expeditions()
+    expeditions()
+    mountains()
+    climbers()
+    expedition_climbers()
 
 if __name__ == "__main__":
     main()
