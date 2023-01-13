@@ -4,7 +4,7 @@ class Mountain:
         self.id = id
         self.name = name
         self.country = country
-        self.rank = int(rank)
+        self.rank = int(rank) if rank else 0
         self.height = int(height)
         self.prominence = int(prominence)
         self.range = range

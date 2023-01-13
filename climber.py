@@ -48,8 +48,7 @@ climb1 = Climber(931,"Burr", "Danahar","Malawi","06-12-1907")
 
 
 def main():
-    pass
-    # print(climb1.get_expeditions())
+    print(climb1.get_expeditions())
 
 
 # Representation method

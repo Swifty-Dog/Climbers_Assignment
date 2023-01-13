@@ -25,13 +25,21 @@ class Expedition:
 
 # prints a None on the end cuz of print(x) statement
     def get_climbers(self):
+        climbers_list = []
         conn = sqlite3.connect("climbersapp.db")
-        cursor = conn.cursor()
-        query = "SELECT * FROM climbers"
-        cursor.execute(query)
-        climbers = cursor.fetchall()
-        for x in climbers:
-            print(x)
+        c = conn.cursor()
+        query = "SELECT * FROM expedition_climbers WHERE expedition_id=?"
+        val = (self.id),
+        c.execute(query,val)
+        results = c.fetchall
+        print(results)
+        # query = "SELECT * FROM climbers"
+        # cursor.execute(query)
+        # climbers = cursor.fetchall()
+        # for x in climbers:
+        #     climbers_list.append(x)
+        #
+        # return climbers_list
 
     def get_mountain(self):
         mountain_list = []
@@ -61,42 +69,28 @@ class Expedition:
 
     def convert_date(self,format):
         # gives format by user which will choose what format it will become to
-        conn = sqlite3.connect("climbersapp.db")
-        cursor = conn.cursor()
-        query = "SELECT date FROM expeditions WHERE ?"
-        val = str(self.id)
-        cursor.execute(query,val)
-        dates = cursor.fetchone()
+        date = self.date
         #current in table is YYYY-MM-DD
         #options YYYY-MM-DD // DD-MM-YYYY // MM-DD-YYYY
         # %d %m %Y
-        for date in dates:
-            date = str(date)
-            date = date.replace(",", "").replace("(", "").replace(")", "").replace("'", "").replace("'", "")
-            year, month, day = date.split("-")
-            if format == "1":
-            #prints it in DD-MM-YYYY
-                print(f"{day}-{month}-{year}")
-            #print it in MM-DD-YYYY
-            if format == "2":
-                print(f"{month}-{day}-{year}")
-            #print is in YYYY-MM-DD
-            if format == "3":
-                print(f"{year}-{month}-{day}")
-
+        date = str(date)
+        date = date.replace(",", "").replace("(", "").replace(")", "").replace("'", "").replace("'", "")
+        year, month, day = date.split("-")
+        if format == "1":
+        #prints it in DD-MM-YYYY
+            return f"{day}-{month}-{year}"
+        #print it in MM-DD-YYYY
+        if format == "2":
+            return f"{month}-{day}-{year}"
+        #print is in YYYY-MM-DD
+        if format == "3":
+            return f"{year}-{month}-{day}"
 
     def convert_duration(self, format):
-        # given format  is by user which will choose what format it will become to
-        conn = sqlite3.connect("climbersapp.db")
-        cursor = conn.cursor()
-        query = "SELECT duration FROM expeditions WHERE id=?"
-        val = str(self.id)
-        cursor.execute(query, val)
-        duration = cursor.fetchall()
-        duration = str(duration)
+        # given format  is by user which will choose what format it will become tp
+        duration = self.duration
         duration = duration.replace(",", "").replace("(", "").replace(")", "").replace("'", "").replace("'", "").replace("[","").replace("]","")
-        duration = duration.replace("H"," ")
-        duration = duration.split(" ")
+        duration = duration.split("H")
         hours = int(duration[0])
         minutes = int(duration[1])
         #prints the duration in days
@@ -104,24 +98,23 @@ class Expedition:
             minutes_to_day = minutes / 3600
             hours_to_day = hours / 24
             total_day = hours_to_day + minutes_to_day
-            print(f"The duration in days is: {total_day}")
-
+            return total_day
         #prints the duration in hours
-        if format =="2":
+        elif format =="2":
             minutes_to_hours = minutes / 60
-            total_hours = hours + minutes_to_hours
-            print(f"The duration in hours is: {total_hours}")
-
+            total_hours = round(hours + minutes_to_hours)
+            return total_hours
         #prints the duration in minutes
-        if format == "3":
+        elif format == "3":
             hours_to_minutes = hours * 60
-            total_minutes = hours_to_minutes + minutes
-            print(f"The duration in minutes is: {total_minutes}")
+            total_minutes = round(hours_to_minutes + minutes)
+            return total_minutes
 
-exp = Expedition(4, "The journey of Momhil Sar",1 ,"Pakistan", "1965-08-18", "Indonesia", "24H48", True )
+        return "Invalid Format"
+exp = Expedition(2, "The journey of Momhil Sar",2 ,"Pakistan", "1965-08-18", "Indonesia", "24H48", True )
 
 def main():
-    exp.convert_duration("1")
+    print(exp.get_mountain())
 
     # Representation method
     # This will format the output in the correct order
